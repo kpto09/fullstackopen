@@ -1,27 +1,31 @@
-const Hello = ({ name, age }) => {
+import { useState } from 'react'
 
-  const bornYear = () => new Date().getFullYear() - age
+const Display = ({title}) => <div> <h2>{title}</h2></div>
 
-  return (
-    <div>
-      <p>
-        Hello {name}, you are {age} years old
-      </p>
+const Statistic = ({value, text}) => <div>{text} {value}</div>
 
-      <p>So you were probably born in {bornYear()}</p>
-    </div>
-  )
-}
+const Button = ({onClick, text}) => <button onClick={onClick}> {text} </button>
 
 const App = () => {
-  const name = 'Peter'
-  const age = 10
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  const goodCounter = () => setGood(good + 1);
+  const neutralCounter = () => setNeutral(neutral + 1);
+  const badCounter = () => setBad(bad + 1);
 
   return (
     <div>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10} />
-      <Hello name={name} age={age} />
+      <Display title='give feedback' />
+      <Button onClick={goodCounter} text='good'/>
+      <Button onClick={neutralCounter} text='neutral'/>
+      <Button onClick={badCounter} text='bad'/>
+      <Display title='statistics' />
+      <Statistic value={good} text='good'/>
+      <Statistic value={neutral} text='neutral'/>
+      <Statistic value={bad} text='bad'/>
     </div>
   )
 }
