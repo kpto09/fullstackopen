@@ -1,96 +1,40 @@
 import { useState } from 'react'
 
-// todo: fix statistics and button logic
-
-const Display = ({title}) => <div><h2>{title}</h2></div>
-
-const StatisticLine = ({text, value}) => {
-  if (text === 'positive') {
-    return (
-      <tr>
-      <td>{text}</td> 
-      <td>{value} %</td>
-    </tr>
-    )
-  }
-  return (
-    <tr>
-      <td>{text}</td> 
-      <td>{value}</td>
-    </tr>
+const Display = ({selected, anecdotes}) => {
+  return(
+    <div>
+      {anecdotes[selected]}
+    </div>
   )
 }
-
-const Statistic = ({clicks, text}) =>  {
-  const total = clicks.good + clicks.neutral + clicks.bad
-  const average = (clicks.good * 1 + clicks.bad * -1) / total
-  const positive = clicks.good * (100/total)
-
-  if (total === 0) {
-    return (
-      <div>No feedback given</div>
-    )
-  }
-
+const Button = ({onClick, text}) => {
   return (
-    <table>
-      <tbody>
-        <StatisticLine text={text.good} value={clicks.good}/>
-        <StatisticLine text={text.neutral} value={clicks.neutral}/>
-        <StatisticLine text={text.bad} value={clicks.bad}/>
-        <StatisticLine text='all' value={total}/>
-        <StatisticLine text='average' value={average}/>
-        <StatisticLine text='positive' value={positive}/>
-      </tbody>     
-    </table>
+    <button onClick={onClick}>{text}</button>
   )
-  
 }
-const Button = ({onClick, text}) => <button onClick={onClick}> {text} </button>
 
 const App = () => {
-  const [clicks, setClicks] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  })
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
+   
+  const [selected, setSelected] = useState(0)
 
-  const text = {
-    good: 'good',
-    neutral: 'neutral',
-    bad: 'bad',
+  const handleRandomClick = () => {
+    setSelected(Math.floor(Math.random() * anecdotes.length))
   }
-
-  const handleGoodClick = () => {
-    setClicks({
-      ...clicks,
-      good: clicks.good +1
-    })
-  }
-  const handleNeutralClick = () => {
-    setClicks({
-      ...clicks,
-      neutral: clicks.neutral +1
-    })
-  }
-
-  const handleBadClick = () => {
-    setClicks({
-      ...clicks,
-      bad: clicks.bad +1
-    })
-  }
-
 
   return (
     <div>
-      <Display title='give feedback' />
-      <Button onClick={handleGoodClick} text='good'/>
-      <Button onClick={handleNeutralClick} text='neutral'/>
-      <Button onClick={handleBadClick} text='bad'/>
-
-      <Display title='statistics' />
-      <Statistic clicks={clicks} text={text}/>
+      <Display selected={selected} anecdotes={anecdotes} />
+      <Button onClick={handleRandomClick} text='random'/>
     </div>
   )
 }
