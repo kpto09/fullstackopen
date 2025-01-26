@@ -1,12 +1,22 @@
 import { useState } from 'react'
 
-const Display = ({selected, anecdotes}) => {
+const Header = ({title}) => {
+  return (
+    <h2>
+      {title}
+    </h2>
+  )
+}
+
+const Display = ({selected, anecdotes, votes}) => {
   return(
     <div>
-      {anecdotes[selected]}
+      <p>{anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
     </div>
   )
 }
+
 const Button = ({onClick, text}) => {
   return (
     <button onClick={onClick}>{text}</button>
@@ -24,17 +34,28 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+
+  const voteArr = Array(anecdotes.length).fill(0)
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(voteArr)
 
   const handleRandomClick = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length))
   }
 
+  const handleVoteClick = () => {
+    const copy = [...votes]
+    copy[selected] += 1
+    setVotes(copy)
+  }
+
   return (
     <div>
-      <Display selected={selected} anecdotes={anecdotes} />
-      <Button onClick={handleRandomClick} text='random'/>
+      <Header title='Anecdote of the day' />
+      <Display selected={selected} anecdotes={anecdotes} votes={votes} />
+      <Button onClick={handleVoteClick} text='vote'/>
+      <Button onClick={handleRandomClick} text='next anecdote'/>
     </div>
   )
 }
