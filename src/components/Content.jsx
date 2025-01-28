@@ -5,9 +5,6 @@ const Content = ({course}) => {
         (acc, curVal) => acc + curVal.exercises, 0
     ) 
 
-    console.log("total: ", total);
-    
-
     return (
         <div> 
             <Part course={course}/>
