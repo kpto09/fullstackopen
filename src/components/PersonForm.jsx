@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import personsService from '../services/persons'
 
 const PersonForm = ({persons, setPersons}) => {
     const [newName, setNewName] = useState('')
@@ -26,9 +27,14 @@ const PersonForm = ({persons, setPersons}) => {
           id: persons.length+1
         }
     
-        setPersons(persons.concat(nameObject))
-        setNewName('')
-        setNewNumber('')
+        // add contact into database
+        personsService
+            .create(nameObject)
+            .then(contact => {
+                persons.concat(contact)
+                setNewName('')
+                setNewNumber('')
+            })
     }
 
     return (
