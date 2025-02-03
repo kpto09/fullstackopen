@@ -6,11 +6,11 @@ const PersonForm = ({persons, setPersons}) => {
     const [newNumber, setNewNumber] = useState('')
 
     const handleNameChange = (event) => {
-        setNewName(event.target.value)
+      setNewName(event.target.value)
     }
 
     const handleNumberChange = (event) => {
-        setNewNumber(event.target.value)
+      setNewNumber(event.target.value)
     }
 
     const addName = (event) => {
@@ -24,29 +24,32 @@ const PersonForm = ({persons, setPersons}) => {
         const nameObject = {
           name: newName,
           number: newNumber,
-          id: persons.length+1
+          id: `${persons.length+1}`
         }
-    
+
         // add contact into database
         personsService
-            .create(nameObject)
-            .then(contact => {
-                persons.concat(contact)
-                setNewName('')
-                setNewNumber('')
-            })
+					.create(nameObject)
+					.then(contact => {
+							setPersons(persons.concat(contact))
+							setNewName('')
+							setNewNumber('')
+					})
+					.catch(error => {
+						alert(`There was an error when adding the contact. Error message: '${error}'`)
+					})
     }
 
     return (
-        <div>
-            <form onSubmit={addName}>
-                <div>name: <input value={newName} onChange={handleNameChange}/></div>
-                <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-                <div>
-                <button type="submit">add</button>
-                </div>
-            </form>
-        </div>
+			<div>
+				<form onSubmit={addName}>
+					<div>name: <input value={newName} onChange={handleNameChange}/></div>
+					<div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
+					<div>
+					<button type="submit">add</button>
+					</div>
+				</form>
+			</div>
     )
 }
 

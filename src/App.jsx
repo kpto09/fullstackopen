@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import Persons from './components/Persons'
+import DisplayContact from './components/DisplayContact'
 import personsService from './services/persons'
 
 const App = () => {
@@ -10,13 +10,16 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
 
   // retrieves all the contact from database
-  useEffect(() => {     
+  useEffect(() => {   
     personsService      
     .getAll() 
     .then(initialContactData => {
       setPersons(initialContactData)
     })
-  }, [])  
+    .catch(error => {
+      alert(`There was an error retrieving all contacts. Error message: '${error}'`)
+    })
+  }, [])
 
   return (
     <div>
@@ -27,7 +30,7 @@ const App = () => {
       <PersonForm persons={persons} setPersons={setPersons}/>
 
       <h2>Numbers</h2>
-      <Persons persons={persons} newFilter={newFilter}/>
+      <DisplayContact persons={persons} setPersons={setPersons} newFilter={newFilter} />
     </div>
   )
 }
