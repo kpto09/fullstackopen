@@ -15,21 +15,37 @@ const PersonForm = ({persons, setPersons}) => {
 
     const addName = (event) => {
         event.preventDefault()
-    
+				let contactObject = {
+					name: newName,
+					number: newNumber,
+					id: `${persons.length+1}`
+				}
+
         const checkNameExists = persons.some(p => p.name === newName)
         if (checkNameExists) {
-          return window.alert(`${newName} is already added to phonebook`)
+						const curPersonId = persons.filter(p => p.name === newName)[0].id
+          	if (window.confirm(`${newName} is already added to phonebook. Do you want to replace the old number with a new one?`)){
+							contactObject = {
+								...contactObject,
+								id: curPersonId
+							}
+							
+							return personsService
+							.updateContact(contactObject)
+							.then(() => {
+								setPersons(
+									persons
+									.map(p => p.id === curPersonId ? {...p, ...contactObject} : p))
+							})
+							.catch(error => {
+								alert(`There was an error when updating the contact. Error message: '${error}'`)
+							})
+						}
         }
     
-        const nameObject = {
-          name: newName,
-          number: newNumber,
-          id: `${persons.length+1}`
-        }
-
         // add contact into database
         personsService
-					.create(nameObject)
+					.create(contactObject)
 					.then(contact => {
 							setPersons(persons.concat(contact))
 							setNewName('')
