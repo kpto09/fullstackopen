@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import personsService from '../services/persons'
 
-const PersonForm = ({persons, setPersons}) => {
+const PersonForm = ({messageProp, personsProp}) => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
+
+		const {setMessage, setMessageType} = messageProp
+		const {persons, setPersons} = personsProp
 
     const handleNameChange = (event) => {
       setNewName(event.target.value)
@@ -24,7 +27,7 @@ const PersonForm = ({persons, setPersons}) => {
         const checkNameExists = persons.some(p => p.name === newName)
         if (checkNameExists) {
 						const curPersonId = persons.filter(p => p.name === newName)[0].id
-          	if (window.confirm(`${newName} is already added to phonebook. Do you want to replace the old number with a new one?`)){
+          	if (window.confirm(`${contactObject.name} is already added to phonebook. Do you want to replace the old number with a new one?`)){
 							contactObject = {
 								...contactObject,
 								id: curPersonId
@@ -36,9 +39,12 @@ const PersonForm = ({persons, setPersons}) => {
 								setPersons(
 									persons
 									.map(p => p.id === curPersonId ? {...p, ...contactObject} : p))
+								setMessageType("success")
+								setMessage(`Changed ${contactObject.name} number.`)
 							})
 							.catch(error => {
-								alert(`There was an error when updating the contact. Error message: '${error}'`)
+								setMessageType("error")
+								setMessage(`Contact not found.'${error}'`)
 							})
 						}
         }
@@ -50,9 +56,12 @@ const PersonForm = ({persons, setPersons}) => {
 							setPersons(persons.concat(contact))
 							setNewName('')
 							setNewNumber('')
+							setMessageType("success")
+							setMessage(`Added '${newName}'`)
 					})
 					.catch(error => {
-						alert(`There was an error when adding the contact. Error message: '${error}'`)
+						setMessageType("error")
+						setMessage(`There was an error when adding the contact. Error message: '${error}'`)
 					})
     }
 

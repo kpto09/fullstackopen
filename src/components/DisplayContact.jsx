@@ -1,15 +1,21 @@
 import personsService from '../services/persons'
 
-const DisplayContact = ({persons, newFilter, setPersons}) => {
+const DisplayContact = ({personsProp, messageProp, newFilter}) => {
+	const {persons, setPersons} = personsProp
+	const {setMessage, setMessageType} = messageProp
+
 	const handleDeleteContact = (name, id) => {
 		if (window.confirm(`Delete ${name}`)) {
 			personsService
 					.deleteContact(id)
 					.then(() => {
 						setPersons(persons.filter(p => p.id !== id))
+						setMessageType("success")
+						setMessage(`Deleted ${name} from phonebook.`)
 					})
-					.catch(error => {
-						alert(`There was an error when deleting. Error message: '${error}'`)
+					.catch(() => {
+						setMessageType("error")
+						setMessage(`Information of ${name} has been removed from server.`)
 					})
 		}
 	}

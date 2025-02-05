@@ -1,13 +1,20 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import DisplayContact from './components/DisplayContact'
+import Notification from './components/Notification'
 import personsService from './services/persons'
 
 const App = () => {
+  // states
   const [persons, setPersons] = useState([])
   const [newFilter, setNewFilter] = useState('')
+  const [message, setMessage] = useState(undefined)
+  const [messageType, setMessageType] = useState('')
+
+  // function props
+  const messageProp = {message, messageType, setMessage, setMessageType}
+  const personsProp = {persons, setPersons}
 
   // retrieves all the contact from database
   useEffect(() => {   
@@ -23,14 +30,22 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <Notification messageProp={messageProp}/>
+      <h2 className="phonebookHeaders">Phonebook</h2>
       <Filter setNewFilter={setNewFilter}/>
       
-      <h2>Add New Contact</h2>
-      <PersonForm persons={persons} setPersons={setPersons}/>
+      <h2 className="phonebookHeaders">Add New Contact</h2>
+      <PersonForm
+        messageProp={messageProp}
+        personsProp={personsProp}
+      />
 
-      <h2>Numbers</h2>
-      <DisplayContact persons={persons} setPersons={setPersons} newFilter={newFilter} />
+      <h2 className="phonebookHeaders">Numbers</h2>
+      <DisplayContact 
+        personsProp={personsProp}
+        messageProp={messageProp}
+        newFilter={newFilter}
+      />
     </div>
   )
 }
