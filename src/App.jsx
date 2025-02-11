@@ -7,8 +7,6 @@ function App() {
   const [allCountry, setAllCountry] = useState(null)
   const [filter, setFilter] = useState('')
 
-
-
   useEffect(() => {
     if (filter) {
       console.log("effect run, filter is now: ", filter)
