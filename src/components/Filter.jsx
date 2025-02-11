@@ -2,7 +2,6 @@ const Filter = ({setFilter}) => {
 
     const handleFilterChange = (event) => {
         event.preventDefault()
-        console.log(event.target.value)
         setFilter(event.target.value)
     }
 

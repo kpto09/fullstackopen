@@ -9,7 +9,6 @@ function App() {
 
   useEffect(() => {
     if (filter) {
-      console.log("effect run, filter is now: ", filter)
       countriesServices
       .getAllCountries()
       .then(response => {
