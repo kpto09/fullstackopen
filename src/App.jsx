@@ -1,50 +1,41 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
-import PersonForm from './components/PersonForm'
-import DisplayContact from './components/DisplayContact'
-import Notification from './components/Notification'
-import personsService from './services/persons'
+import DisplayCountries from './components/DisplayCountries'
+import countriesServices from './services/countries'
 
-const App = () => {
-  // states
-  const [persons, setPersons] = useState([])
-  const [newFilter, setNewFilter] = useState('')
-  const [message, setMessage] = useState(undefined)
-  const [messageType, setMessageType] = useState('')
+function App() {
+  const [allCountry, setAllCountry] = useState(null)
+  const [filter, setFilter] = useState('')
 
-  // function props
-  const messageProp = {message, messageType, setMessage, setMessageType}
-  const personsProp = {persons, setPersons}
 
-  // retrieves all the contact from database
-  useEffect(() => {   
-    personsService      
-    .getAll() 
-    .then(initialContactData => {
-      setPersons(initialContactData)
-    })
-    .catch(error => {
-      alert(`There was an error retrieving all contacts. Error message: '${error}'`)
-    })
-  }, [])
+
+  useEffect(() => {
+    if (filter) {
+      console.log("effect run, filter is now: ", filter)
+      countriesServices
+      .getAllCountries()
+      .then(response => {
+        const extractCountryData = response.map(country => ({
+          name: country.name.common,
+          capital: country.capital,
+          area: country.area,
+          languages: country.languages,
+          flags: country.flags
+        }))
+        setAllCountry(extractCountryData)  
+      })
+      .catch(error => console.log ("error when retrieving all countries: ", error))
+    }
+  },[filter])
 
   return (
     <div>
-      <Notification messageProp={messageProp}/>
-      <h2 className="phonebookHeaders">Phonebook</h2>
-      <Filter setNewFilter={setNewFilter}/>
-      
-      <h2 className="phonebookHeaders">Add New Contact</h2>
-      <PersonForm
-        messageProp={messageProp}
-        personsProp={personsProp}
+      <Filter 
+        setFilter={setFilter}
       />
-
-      <h2 className="phonebookHeaders">Numbers</h2>
-      <DisplayContact 
-        personsProp={personsProp}
-        messageProp={messageProp}
-        newFilter={newFilter}
+      <DisplayCountries 
+        filter={filter}
+        allCountry={allCountry}
       />
     </div>
   )

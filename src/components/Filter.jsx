@@ -1,12 +1,14 @@
-const Filter = ({setNewFilter}) => {
-    
+const Filter = ({setFilter}) => {
+
     const handleFilterChange = (event) => {
-        setNewFilter(event.target.value)
+        event.preventDefault()
+        console.log(event.target.value)
+        setFilter(event.target.value)
     }
-    
+
     return (
         <div>
-            Filter contact <input onChange={handleFilterChange}/>
+            <input onChange={handleFilterChange}/> filter countries
         </div>
     )
 }
