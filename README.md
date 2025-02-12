@@ -6,7 +6,6 @@ This repository acts as a log to keep track of what I have completed in the cour
 
 The commit history shows the exercises and their respective code. Each exercise submission are based on what I learned up to the point of the course (i.e. my code will not contain topics that are yet to be covered even though they might provide a more efficient solution).
 
-----
 ## Course Progress
 
 ✅ Part 1: Introduction to React (Completed)
