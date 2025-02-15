@@ -1,4 +1,4 @@
-# [FullstackOpen](https://fullstackopen.com/en/) Course Log
+# [FullstackOpen](https://fullstackopen.com/en/) Course Exercise Log
 
 FullstackOpen is a course by the University of Helsinki that covers React, Redux, Node.js, MongoDB, GraphQL and TypeScript.
 
