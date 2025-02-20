@@ -3,7 +3,7 @@ const app = express()
 
 app.use(express.json())
 
-let notes = [
+let contactInfo = [
   { 
     "id": "1",
     "name": "Arto Hellas", 
@@ -31,7 +31,16 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.send(notes);
+  response.send(contactInfo);
+})
+
+app.get('/info', (request, response) => {
+  const timestamp = new Date().toString();
+  response.set('Content-Type', 'text/html');
+  response.send(`
+    <p>Phonebook has info for ${contactInfo.length} people </p>
+    <p>${timestamp}</p>
+  `);
 })
 
 const PORT = 3001
