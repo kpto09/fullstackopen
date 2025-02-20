@@ -30,6 +30,15 @@ app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>');
 })
 
+app.get('/info', (request, response) => {
+  const timestamp = new Date().toString();
+  response.set('Content-Type', 'text/html');
+  response.send(`
+    <p>Phonebook has info for ${contactInfo.length} people </p>
+    <p>${timestamp}</p>
+  `);
+})
+
 app.get('/api/persons', (request, response) => {
   response.send(contactInfo);
 })
@@ -45,13 +54,16 @@ app.get('/api/persons/:id', (request, response) => {
   }  
 })
 
-app.get('/info', (request, response) => {
-  const timestamp = new Date().toString();
-  response.set('Content-Type', 'text/html');
-  response.send(`
-    <p>Phonebook has info for ${contactInfo.length} people </p>
-    <p>${timestamp}</p>
-  `);
+app.delete('/api/persons/:id', (request, response) => {
+  const id = request.params.id;
+  const idFound = contactInfo.find(contact => contact.id === id);
+  if (idFound) {
+    contactInfo = contactInfo.filter(contact => contact.id !== id)
+    response.status(204).end();
+  } else {
+    response.status(404).end()
+  }
+  
 })
 
 const PORT = 3001
