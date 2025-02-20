@@ -54,6 +54,28 @@ app.get('/api/persons/:id', (request, response) => {
   }  
 })
 
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  if (!body) {
+    return response.status(400).json({
+      error: 'content missing'
+    })
+  }
+
+  const contactId = Math.floor(Math.random() * (Math.floor(10000) - Math.ceil(1)) + Math.ceil(1))
+  
+  const newContact = {
+    id: contactId.toString(),
+    name: body.name,
+    number: body.number
+  }
+  
+  contactInfo = contactInfo.concat(newContact)
+
+  response.json(newContact)
+})
+
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id;
   const idFound = contactInfo.find(contact => contact.id === id);
