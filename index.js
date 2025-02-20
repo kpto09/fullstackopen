@@ -34,6 +34,17 @@ app.get('/api/persons', (request, response) => {
   response.send(contactInfo);
 })
 
+app.get('/api/persons/:id', (request, response) => {
+  const id = request.params.id;
+  const contact = contactInfo.find(contact => contact.id === id);
+  console.log(contact)
+  if (contact) {
+    response.send(contact);
+  } else {
+    response.status(404).end()
+  }  
+})
+
 app.get('/info', (request, response) => {
   const timestamp = new Date().toString();
   response.set('Content-Type', 'text/html');
