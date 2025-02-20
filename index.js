@@ -62,6 +62,16 @@ app.post('/api/persons', (request, response) => {
       error: 'content missing'
     })
   }
+  
+  const nameExist = contactInfo.find(contact => contact.name === body.name)
+  const numberExist = contactInfo.find(contact => contact.number === body.number)
+
+
+  if (nameExist || numberExist) {
+    return response.status(409).json({
+      error: 'name or number has already been added. try again.'
+    })
+  }
 
   const contactId = Math.floor(Math.random() * (Math.floor(10000) - Math.ceil(1)) + Math.ceil(1))
   
@@ -70,7 +80,7 @@ app.post('/api/persons', (request, response) => {
     name: body.name,
     number: body.number
   }
-  
+
   contactInfo = contactInfo.concat(newContact)
 
   response.json(newContact)
