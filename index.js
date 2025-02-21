@@ -30,14 +30,21 @@ let contactInfo = [
 ]
 
 const requestLogger = morgan('tiny', (tokens, request, response) => {
-  console.log(request)
   return [
     tokens.method(request, response),
     tokens.url(request, response),
   ].join(' ')
 })
 
-app.use(requestLogger)
+/*
+note: while logging consumer data can be dangeous because of sensitive information,
+this exercise asks to log the post request for practice purposes.
+*/
+morgan.token('body', (request, response) => { 
+  return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :response-time :body'))
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>');
