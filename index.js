@@ -1,7 +1,10 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+
+morgan('tiny')
 
 let contactInfo = [
   { 
@@ -25,6 +28,16 @@ let contactInfo = [
     "number": "39-23-6423122"
   }
 ]
+
+const requestLogger = morgan('tiny', (tokens, request, response) => {
+  console.log(request)
+  return [
+    tokens.method(request, response),
+    tokens.url(request, response),
+  ].join(' ')
+})
+
+app.use(requestLogger)
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>');
